@@ -5,6 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { parseEther } from 'viem';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { ABI, CONTRACT_ADDRESS, MINT_PRICE_ETH } from '../../lib/contract';
+import styles from './mint.module.css';
 
 export default function MintPage() {
   const { data: totalMinted } = useReadContract({
@@ -30,73 +31,77 @@ export default function MintPage() {
   const canMint = Boolean(CONTRACT_ADDRESS);
 
   return (
-    <div style={{ maxWidth: 720, margin: '40px auto', padding: 16 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
-        <h2 style={{ margin: 0 }}>Mint</h2>
-        <ConnectButton />
-      </div>
-
-      {!canMint && (
-        <div style={{ marginTop: 16, padding: 12, border: '1px solid #444', borderRadius: 10 }}>
-          <b>Missing config:</b> set <code>NEXT_PUBLIC_CONTRACT_ADDRESS</code> in Vercel.
+    <div className={styles.page}>
+      <div className={styles.shell}>
+        <div className={styles.header}>
+          <div className={styles.brand}>
+            <h2 className={styles.brandTitle}>Mint a Lucky Ticket</h2>
+            <p className={styles.brandSub}>Base Lucky Lotto • on-chain ticket NFT</p>
+          </div>
+          <ConnectButton />
         </div>
-      )}
 
-      <div style={{ marginTop: 16, padding: 12, border: '1px solid #444', borderRadius: 10 }}>
-        <div>Price: <b>{MINT_PRICE_ETH} ETH</b></div>
-        <div>
-          Supply:{' '}
-          <b>
-            {totalMinted?.toString() ?? '…'} / {maxSupply?.toString() ?? '…'}
-          </b>
+        <div className={styles.card}>
+          <div className={styles.cardInner}>
+            {!canMint && (
+              <div className={styles.alert}>
+                <b>Missing config:</b> set <code>NEXT_PUBLIC_CONTRACT_ADDRESS</code> in Vercel.
+              </div>
+            )}
+
+            <div className={styles.row}>
+              <div className={styles.stat}>
+                <div className={styles.statLabel}>Price</div>
+                <div className={styles.statValue}>{MINT_PRICE_ETH} ETH</div>
+              </div>
+              <div className={styles.stat}>
+                <div className={styles.statLabel}>Supply</div>
+                <div className={styles.statValue}>
+                  {totalMinted?.toString() ?? '…'} / {maxSupply?.toString() ?? '…'}
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.badgeRow}>
+              <span className={styles.badge}>Fixed price</span>
+              <span className={styles.badge}>Fixed supply</span>
+              <span className={styles.badge}>Base</span>
+            </div>
+
+            <div className={styles.actions}>
+              <button
+                className={styles.primaryBtn}
+                disabled={!canMint || isPending || isConfirming}
+                onClick={() => {
+                  writeContract({
+                    abi: ABI,
+                    address: CONTRACT_ADDRESS,
+                    functionName: 'mint',
+                    value: parseEther(MINT_PRICE_ETH),
+                  });
+                }}
+              >
+                {isPending ? 'Confirm in wallet…' : isConfirming ? 'Minting…' : 'Mint now'}
+              </button>
+              <Link className={styles.secondaryLink} href="/">
+                ← back
+              </Link>
+            </div>
+
+            {txHash && (
+              <div className={styles.small}>
+                Tx:{' '}
+                <a href={`https://basescan.org/tx/${txHash}`} target="_blank" rel="noreferrer">
+                  {txHash}
+                </a>
+              </div>
+            )}
+
+            {isSuccess && <div className={styles.success}>Mint success. Check your wallet / OpenSea.</div>}
+
+            {error && <div className={styles.error}>{String(error.message || error)}</div>}
+          </div>
         </div>
-      </div>
-
-      <button
-        style={{
-          marginTop: 16,
-          padding: '12px 16px',
-          borderRadius: 12,
-          border: 0,
-          background: '#2b59ff',
-          color: 'white',
-          fontWeight: 700,
-          cursor: canMint ? 'pointer' : 'not-allowed',
-          opacity: canMint ? 1 : 0.5,
-        }}
-        disabled={!canMint || isPending || isConfirming}
-        onClick={() => {
-          writeContract({
-            abi: ABI,
-            address: CONTRACT_ADDRESS,
-            functionName: 'mint',
-            value: parseEther(MINT_PRICE_ETH),
-          });
-        }}
-      >
-        {isPending ? 'Confirm in wallet…' : isConfirming ? 'Minting…' : 'Mint now'}
-      </button>
-
-      {txHash && (
-        <div style={{ marginTop: 12, fontSize: 14, opacity: 0.85 }}>
-          Tx: <a href={`https://basescan.org/tx/${txHash}`} target="_blank" rel="noreferrer">{txHash}</a>
-        </div>
-      )}
-
-      {isSuccess && (
-        <div style={{ marginTop: 12, padding: 12, border: '1px solid #2a7', borderRadius: 10 }}>
-          Mint success. You can view it in your wallet / OpenSea.
-        </div>
-      )}
-
-      {error && (
-        <div style={{ marginTop: 12, padding: 12, border: '1px solid #a22', borderRadius: 10 }}>
-          {String(error.message || error)}
-        </div>
-      )}
-
-      <div style={{ marginTop: 24 }}>
-        <Link href="/">← back</Link>
       </div>
     </div>
   );
