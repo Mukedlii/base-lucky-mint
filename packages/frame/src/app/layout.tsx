@@ -20,7 +20,7 @@ const miniAppEmbed = {
       type: 'launch_frame',
       name: 'Base Lucky Lotto',
       url: `${baseUrl}/mint`,
-      splashImageUrl: `${baseUrl}/icon.png`,
+      splashImageUrl: `${baseUrl}/splash.png`,
       splashBackgroundColor: '#0a0a12',
     },
   },
