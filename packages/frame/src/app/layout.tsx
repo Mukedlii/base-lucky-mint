@@ -39,15 +39,9 @@ export const metadata: Metadata = {
     // New (Mini Apps)
     'fc:miniapp': JSON.stringify(miniAppEmbed),
 
-    // Legacy Frames tags for backward compatibility
-    'fc:frame': 'vNext',
-    'fc:frame:image': `${baseUrl}/frame.png`,
-    'fc:frame:button:1': 'Mint',
-    'fc:frame:button:1:action': 'link',
-    'fc:frame:button:1:target': `${baseUrl}/mint`,
-    'fc:frame:button:2': 'View contract',
-    'fc:frame:button:2:action': 'link',
-    'fc:frame:button:2:target': process.env.NEXT_PUBLIC_BASESCAN_URL || 'https://basescan.org',
+    // Backward compatibility: clients that still look for fc:frame can parse the same embed.
+    // Avoid legacy button/link tags here, because those can force a browser redirect.
+    'fc:frame': JSON.stringify(miniAppEmbed),
   },
 };
 
