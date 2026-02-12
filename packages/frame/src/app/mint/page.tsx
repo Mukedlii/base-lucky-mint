@@ -99,7 +99,7 @@ export default function MintPage() {
                   rel="noreferrer"
                   onClick={() => setShareOpened(true)}
                 >
-                  Share on Farcaster
+                  Open Warpcast (share)
                 </a>
                 <label className={styles.checkbox}>
                   <input
@@ -108,12 +108,12 @@ export default function MintPage() {
                     onChange={(e) => setShareConfirmed(e.target.checked)}
                     disabled={!shareOpened}
                   />
-                  I shared it
+                  Posted ✅ (I’m back)
                 </label>
               </div>
               {!shareGateOk && (
                 <div className={styles.shareHint}>
-                  Mint unlocks after you click share and confirm.
+                  Click mint → it opens Warpcast with the text. Post it, come back, then tick “Posted”.
                 </div>
               )}
             </div>
@@ -121,8 +121,15 @@ export default function MintPage() {
             <div className={styles.actions}>
               <button
                 className={styles.primaryBtn}
-                disabled={!canMint || !shareGateOk || isPending || isConfirming}
+                disabled={!canMint || isPending || isConfirming}
                 onClick={() => {
+                  if (!shareGateOk) {
+                    setShareOpened(true);
+                    // Open Warpcast compose in a new tab; user returns and confirms.
+                    window.open(warpcastShareUrl, '_blank', 'noopener,noreferrer');
+                    return;
+                  }
+
                   writeContract({
                     abi: ABI,
                     address: CONTRACT_ADDRESS,
@@ -132,7 +139,7 @@ export default function MintPage() {
                 }}
               >
                 {!shareGateOk
-                  ? 'Share to unlock mint'
+                  ? 'Share & recast first'
                   : isPending
                     ? 'Confirm in wallet…'
                     : isConfirming
