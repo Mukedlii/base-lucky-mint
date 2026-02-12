@@ -109,6 +109,70 @@
   font-size: 12px;
 }
 
+.shareGate {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.shareTitle {
+  font-weight: 900;
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+.shareText {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.85;
+  white-space: pre-wrap;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.shareActions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.shareBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: #0a0a12;
+  background: linear-gradient(90deg, #7cf5ff 0%, #ffd66b 50%, #ff5ca8 100%);
+  box-shadow: 0 10px 22px rgba(124, 245, 255, 0.15);
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  opacity: 0.92;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+}
+
+.shareHint {
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
 .actions {
   margin-top: 16px;
   display: flex;

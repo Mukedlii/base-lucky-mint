@@ -3,11 +3,28 @@
 import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { parseEther } from 'viem';
+import { useMemo, useState } from 'react';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { ABI, CONTRACT_ADDRESS, MINT_PRICE_ETH } from '../../lib/contract';
 import styles from './mint.module.css';
 
 export default function MintPage() {
+  const [shareOpened, setShareOpened] = useState(false);
+  const [shareConfirmed, setShareConfirmed] = useState(false);
+
+  const shareText = useMemo(() => {
+    return `I minted a Lucky Ticket 🎟 from Base Lucky Lotto — hope I get lucky.\n\nMint yours too (good luck!): ${typeof window !== 'undefined' ? window.location.origin : ''}/mint`;
+  }, []);
+
+  const warpcastShareUrl = useMemo(() => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const text = encodeURIComponent(
+      `I minted a Lucky Ticket 🎟 from Base Lucky Lotto — hope I get lucky.\n\nMint yours too (good luck!): ${baseUrl}/mint`
+    );
+    const embed = encodeURIComponent(`${baseUrl}/`);
+    return `https://warpcast.com/~/compose?text=${text}&embeds[]=${embed}`;
+  }, []);
+
   const { data: totalMinted } = useReadContract({
     abi: ABI,
     address: CONTRACT_ADDRESS,
@@ -29,6 +46,7 @@ export default function MintPage() {
   });
 
   const canMint = Boolean(CONTRACT_ADDRESS);
+  const shareGateOk = shareOpened && shareConfirmed;
 
   return (
     <div className={styles.page}>
@@ -68,10 +86,42 @@ export default function MintPage() {
               <span className={styles.badge}>Base</span>
             </div>
 
+            <div className={styles.shareGate}>
+              <div className={styles.shareTitle}>Step 1 — Share to unlock mint</div>
+              <div className={styles.shareText}>
+                {shareText || 'I minted a Lucky Ticket…'}
+              </div>
+              <div className={styles.shareActions}>
+                <a
+                  className={styles.shareBtn}
+                  href={warpcastShareUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setShareOpened(true)}
+                >
+                  Share on Farcaster
+                </a>
+                <label className={styles.checkbox}>
+                  <input
+                    type="checkbox"
+                    checked={shareConfirmed}
+                    onChange={(e) => setShareConfirmed(e.target.checked)}
+                    disabled={!shareOpened}
+                  />
+                  I shared it
+                </label>
+              </div>
+              {!shareGateOk && (
+                <div className={styles.shareHint}>
+                  Mint unlocks after you click share and confirm.
+                </div>
+              )}
+            </div>
+
             <div className={styles.actions}>
               <button
                 className={styles.primaryBtn}
-                disabled={!canMint || isPending || isConfirming}
+                disabled={!canMint || !shareGateOk || isPending || isConfirming}
                 onClick={() => {
                   writeContract({
                     abi: ABI,
@@ -81,7 +131,13 @@ export default function MintPage() {
                   });
                 }}
               >
-                {isPending ? 'Confirm in wallet…' : isConfirming ? 'Minting…' : 'Mint now'}
+                {!shareGateOk
+                  ? 'Share to unlock mint'
+                  : isPending
+                    ? 'Confirm in wallet…'
+                    : isConfirming
+                      ? 'Minting…'
+                      : 'Mint now'}
               </button>
               <Link className={styles.secondaryLink} href="/">
                 ← back
