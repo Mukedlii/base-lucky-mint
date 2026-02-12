@@ -11,7 +11,7 @@
     "homeUrl": "https://base-lucky-mint-frame.vercel.app/",
     "imageUrl": "https://base-lucky-mint-frame.vercel.app/image.png",
     "buttonTitle": "Open",
-    "splashImageUrl": "https://base-lucky-mint-frame.vercel.app/splash.png",
+    "splashImageUrl": "https://base-lucky-mint-frame.vercel.app/icon.png",
     "splashBackgroundColor": "#6200EA",
     "webhookUrl": "https://base-lucky-mint-frame.vercel.app/api/webhook"
   }
