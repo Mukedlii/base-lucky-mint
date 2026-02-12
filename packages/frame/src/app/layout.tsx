@@ -9,6 +9,23 @@ const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin']
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
+// Mini App Embed (Frames v2 successor). This makes Warpcast open the app in an in-app modal
+// instead of bouncing users out to Safari when they interact with the embed.
+const miniAppEmbed = {
+  version: '1',
+  imageUrl: `${baseUrl}/frame.png`,
+  button: {
+    title: 'Mint',
+    action: {
+      type: 'launch_frame',
+      name: 'Base Lucky Lotto',
+      url: `${baseUrl}/mint`,
+      splashImageUrl: `${baseUrl}/favicon.ico`,
+      splashBackgroundColor: '#0a0a12',
+    },
+  },
+};
+
 export const metadata: Metadata = {
   title: 'Base Lucky Lotto',
   description: 'Mint an on-chain lucky ticket on Base.',
@@ -19,6 +36,10 @@ export const metadata: Metadata = {
     images: ['/frame.png'],
   },
   other: {
+    // New (Mini Apps)
+    'fc:miniapp': JSON.stringify(miniAppEmbed),
+
+    // Legacy Frames tags for backward compatibility
     'fc:frame': 'vNext',
     'fc:frame:image': `${baseUrl}/frame.png`,
     'fc:frame:button:1': 'Mint',
