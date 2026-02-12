@@ -1,0 +1,17 @@
+{
+  "name": "base-lucky-mint",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "contracts:build": "npm --workspace @base-lucky/contracts run build",
+    "contracts:test": "npm --workspace @base-lucky/contracts run test",
+    "contracts:deploy": "npm --workspace @base-lucky/contracts run deploy",
+    "frame:dev": "npm --workspace @base-lucky/frame run dev",
+    "frame:build": "npm --workspace @base-lucky/frame run build",
+    "frame:start": "npm --workspace @base-lucky/frame run start"
+  }
+}
