@@ -9,7 +9,7 @@ export default function Home() {
           <div>
             <h1 className={styles.title}>Base Lucky Lotto</h1>
             <p className={styles.subtitle}>
-              Mint a playful on-chain ticket NFT on Base. Fixed price, fixed supply — a clean, bright mint.
+              Mint = 1 entry. Weekly draw on Base with on-chain payout.
             </p>
             <div className={styles.pills}>
               <span className={styles.pill}>0.00015 ETH</span>
@@ -17,9 +17,19 @@ export default function Home() {
               <span className={styles.pill}>Base</span>
             </div>
 
+            <div className={styles.raffle}>
+              <div className={styles.raffleTitle}>Weekly draw</div>
+              <ul className={styles.raffleList}>
+                <li>Mint = 1 entry</li>
+                <li>Prize: <b>$50</b> (Base)</li>
+                <li>Draw: Next Thursday (1 week)</li>
+                <li>Payout: on-chain (tx link posted)</li>
+              </ul>
+            </div>
+
             <div className={styles.ctas}>
               <Link className={styles.primary} href="/mint">
-                Mint now
+                Get 1 entry
               </Link>
               <a className={styles.secondary} href="/frame.png" target="_blank" rel="noreferrer">
                 View frame image
