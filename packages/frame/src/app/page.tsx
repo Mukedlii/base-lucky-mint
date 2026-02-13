@@ -20,9 +20,11 @@ export default function Home() {
             <div className={styles.raffle}>
               <div className={styles.raffleTitle}>Weekly draw</div>
               <ul className={styles.raffleList}>
-                <li>Mint = 1 entry</li>
+                <li><b>Demo</b>: free preview only (no entry, no rewards)</li>
+                <li><b>Mint</b> = 1 entry</li>
                 <li>Prize: <b>$50</b> (Base)</li>
                 <li>Draw: Next Thursday (1 week)</li>
+                <li>Min entries: <b>200</b> (otherwise rolls over)</li>
                 <li>Payout: on-chain (tx link posted)</li>
               </ul>
             </div>
