@@ -3,25 +3,12 @@
 import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { parseEther } from 'viem';
-import { useMemo, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { ABI, CONTRACT_ADDRESS, MINT_PRICE_ETH } from '../../lib/contract';
 import styles from './mint.module.css';
 
 export default function MintPage() {
-  const router = useRouter();
-  const [mintMode, setMintMode] = useState(false);
-
-  useEffect(() => {
-    const qs = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-    const ok = qs?.get('mint') === '1';
-    if (!ok) router.replace('/');
-    setMintMode(Boolean(ok));
-  }, [router]);
-
-  if (!mintMode) return null;
-
   const [shareOpened, setShareOpened] = useState(false);
   const [shareConfirmed, setShareConfirmed] = useState(false);
 
@@ -74,6 +61,19 @@ export default function MintPage() {
 
         <div className={styles.card}>
           <div className={styles.cardInner}>
+            <div className={styles.raffle}>
+              <div className={styles.raffleTitle}>Weekly draw</div>
+              <ul className={styles.raffleList}>
+                <li><b>Demo</b>: free preview only (no entry, no rewards)</li>
+                <li><b>Mint</b> = 1 entry</li>
+                <li>Prize: <b>$50</b> (Base)</li>
+                <li>Draw: Next Thursday (1 week)</li>
+                <li>Min entries: <b>200</b> (otherwise rolls over)</li>
+                <li>Payout: on-chain (tx link posted)</li>
+              </ul>
+            </div>
+
+
             {!canMint && (
               <div className={styles.alert}>
                 <b>Missing config:</b> set <code>NEXT_PUBLIC_CONTRACT_ADDRESS</code> in Vercel.

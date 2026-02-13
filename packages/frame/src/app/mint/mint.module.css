@@ -56,6 +56,28 @@
   padding: 18px;
 }
 
+.raffle {
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.raffleTitle {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+}
+
+.raffleList {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;

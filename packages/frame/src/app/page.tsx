@@ -30,7 +30,7 @@ export default function Home() {
             </div>
 
             <div className={styles.ctas}>
-              <Link className={styles.primary} href="/mint?mint=1">
+              <Link className={styles.primary} href="/mint">
                 Get 1 entry
               </Link>
               <a className={styles.secondary} href="/frame.png" target="_blank" rel="noreferrer">
